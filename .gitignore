@@ -1,0 +1,6 @@
+# Log
+/log/p1cron.log
+/log/p1sh.log
+
+# Misc
+/inc/settings.inc.php

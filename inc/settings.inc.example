@@ -1,0 +1,18 @@
+<?php
+
+define('BASE_PATH', dirname( dirname(__FILE__) ));
+
+/**
+ * Database settings
+ */
+$config['db_host'] = 'localhost';
+$config['db_name'] = 'smartmeter';
+$config['db_user'] = '';
+$config['db_pass'] = '';
+
+/**
+ * Misc settings
+ */
+$config['p1datajsonurl'] = 'http://rpi01/p1data.json';
+
+?>
