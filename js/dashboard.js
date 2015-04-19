@@ -76,7 +76,8 @@ $(document).ready(function() {
                 $('#year_date').html(json.year_date);
                 $('#year_normal').html(json.year_normal);
                 $('#year_low').html(json.year_low);
-                $('#year_total').html(json.year_total);                 
+                $('#year_total').html(json.year_total);       
+				
             }             
         });              
     }

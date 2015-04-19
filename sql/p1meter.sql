@@ -85,7 +85,7 @@ SELECT
     sum(`e_low`) as e_low,
     sum(`e_total`) as e_total 
 FROM `usage_per_day` 
-GROUP BY monthname(`date`), year(`date`);
+GROUP BY month(`usage_per_day`.`date`), year(`date`);
 
 CREATE VIEW total_per_year AS
 SELECT 
