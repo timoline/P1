@@ -15,10 +15,10 @@
     <title>Dashboard</title>
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
     <!-- Custom CSS -->
-    <link href="style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
 
     <!-- Custom Fonts -->
 
@@ -37,34 +37,30 @@
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-1">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="dash.html">Smartmeter</a>
+            <a class="navbar-brand" href="#">Smartmeter</a>
         </div>
         <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <div class="collapse navbar-collapse" id="navbar-1">
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="dashboard.html">Dashboard</a></li>
-                <li><a href="live.html">Live</a></li>
-                <li><a href="day.html">Day</a></li>            
-                <li><a href="day_hour.html">Day(hour)</a></li>
-                <li><a href="week.html">Week</a></li>         
-                <li><a href="month.html">Month</a></li>
-                <li><a href="year.html">Year</a></li>           
+				<li><a href="index.php">History</a></li>  
+                <li><a href="dashboard.html">Dashboard</a></li>   
+				<li><a href="insights.html">Insights</a></li>  				
             </ul>
-        </div>
+        </div>	
         <!-- /.navbar-collapse -->
     </div>
     <!-- /.container -->
 </nav>
 
 
-  <!-- Page Content -->
-  <div class="container">
+<!-- Page Content -->
+<div class="container">
 
     <!-- Marketing Icons Section -->
     <div class="row">
@@ -137,7 +133,7 @@
         </div>         
     <!-- /.row -->
 
-  </div>
+	</div>
     <div class="row">  
         <div class="col-xs-12 col-sm-6 col-lg-3">
             <div class="panel panel-primary">
@@ -220,25 +216,27 @@
             </div>
         </div>          
     </div>
+</div>	
   <!-- /.container -->
     <!-- Footer -->
     </br>
     </br>
     </br>
-    <footer class="footer">
-      <div class="row">
+<!-- Footer -->
+<footer class="footer">
+    <div class="row">
         <div class="col-lg-12 copyright">
-          <p>Copyright &copy; Timrz 2015</p>
+            <p>Copyright &copy; Timrz 2015</p>
         </div>
-      </div>
-    </footer>
-  <!-- jQuery -->
-    <script type='text/javascript' src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.js"></script>
-    <script type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js'></script>
+    </div>
+</footer>
+ <!-- jQuery -->
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.js"></script>
+<script type='text/javascript' src='http://code.jquery.com/ui/1.11.4/jquery-ui.js'></script>        
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="js/dashboard.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/dashboard.js"></script>
  
  
 </body>

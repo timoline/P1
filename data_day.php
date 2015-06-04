@@ -30,8 +30,8 @@ $series3['data'] = date('l j F Y', strtotime($date));
 foreach ($rows as $r){
     $category['data'][] = strtotime($r->ts)*1000;
     $series1['data'][] = ($r->current_power)*1000; // kW => Watt
-    $a = $a + ($r->current_power) ;
-    $series2['data'][] = round(($a*60)/3.6);    //???
+    $a = $a + round(($r->current_power*60)/3.6) ;
+    $series2['data'][] = $a;    //???	
 }
     $result = array();
     array_push($result,$category);
