@@ -250,7 +250,7 @@ class Database {
 	*/
     public function getMonthYear($month = null,$year) {
         try {
-            if($month = null)
+            if($month != null)
             {
                 $sth = $this->_db->prepare("
                 SELECT
