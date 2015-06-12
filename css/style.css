@@ -75,7 +75,7 @@ body {
 }
 
 .chart_tooltip_header{
-    font-size:15px;
+    font-size:13px;
     font-weight:bold;
     background:#eee;
     border:1px solid #ccc;
@@ -85,7 +85,7 @@ body {
 
 .chart_tooltip_table{
     width: 100%;  
-    font-size:14px;
+    font-size:12px;
 }
 .chart_tooltip_name{
     
