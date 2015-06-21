@@ -72,7 +72,7 @@ $(document).ready(function() {
             pointFormat: '<tbody><tr><td class="chart_tooltip_name" style="color: {series.color}">\u25A0 {series.name}: </td>' +
                          '<td class="chart_tooltip_value">{point.y}</td></tr>',
             footerFormat: '<td colspan="2" class="chart_tooltip_total"><b>{point.total} kWh</b></td></tbody></table>',
-            valueSuffix: ' kWh',
+            //valueSuffix: ' kWh',
             crosshairs: [{
                 dashStyle: 'solid',
                 color: '#EEEEEE'
@@ -127,19 +127,21 @@ $(document).ready(function() {
         },                  
         series: []
     }
-   
+ 
 	//create the chart
     function createChart(target,date){    
 			$.ajax({
 				url: 'data_'+target+'.php?date='+date,
 				dataType: 'json',
 				success: function( jsonData ) {
-					//console.log(jsonData);
+	
+				//console.log(jsonData);
                     options.xAxis.categories = jsonData[0]['data'];
                     options.series[0] = jsonData[1];
                     options.series[1] = jsonData[2];
                     options.title.text = jsonData[3]['data'];   
-					options.series[0].zIndex = 1;					
+					options.series[0].zIndex = 1;	
+					options.series[1].tooltip = { valueSuffix: " kWh" };					
 
 					switch (target) {
 
@@ -184,14 +186,14 @@ $(document).ready(function() {
 	$('#history').data('chart', target);	
 	$('#chart_panelheader').html(target);	
     createChart(target,date);
+   
    /* 
 	var target ="live";
 	$('#history').hide();
 	$('#history').data('chart', target);	
 	$('#chart_panelheader').html(target);
     */	
-	
-							
+								
    // Live chart   
 	function createLiveChart(){     
 		chart = new Highcharts.Chart({
@@ -335,5 +337,5 @@ $(document).ready(function() {
 			createChart(target, date);
 		}		
 	});
-    
+  
 });
