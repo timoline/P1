@@ -94,16 +94,22 @@ class Database {
     
  	/**
 	* Get usage per day (min,max,avg)
-	*/
+ 	*/
     public function getUsageDay($date) {
         try {
             $sth = $this->_db->prepare("
-            SELECT 
-                * 
-            FROM 
-            `usage_per_day`
-            WHERE
-                DATE(date) = :date");
+			SELECT 
+				DATE(ts) as date, 
+				(MAX(meter_normal)-MIN(meter_normal)) as e_normal, 
+				(MAX(meter_low)-MIN(meter_low)) as e_low, 
+				((MAX(meter_normal)-MIN(meter_normal))+(MAX(meter_low)-MIN(meter_low))) as e_total, 
+				MIN(`current_power`) as min_power, 
+				MAX(`current_power`) as max_power, 
+				AVG(`current_power`) as avg_power 
+			FROM consumption 
+			WHERE DATE(ts) = :date
+			GROUP BY DATE(ts)
+			");
 
             $sth->bindValue(':date', $date, PDO::PARAM_STR); 
             $sth->execute();
@@ -114,7 +120,7 @@ class Database {
             $this->printErrorMessage($e->getMessage());
         }
     }     
- 
+
  
 	/**
 	* Get usage day per minute //getMinuteDay
@@ -122,12 +128,10 @@ class Database {
     public function getMinuteDay($date) {
         try {
             $sth = $this->_db->prepare("
-            SELECT
-            	*
-            FROM 
-            	`consumption`
-            WHERE
-                DATE(ts) = :date");
+            SELECT *
+            FROM consumption
+            WHERE DATE(ts) = :date
+			");
 
             $sth->bindValue(':date', $date, PDO::PARAM_STR); 
             $sth->execute();
@@ -146,12 +150,16 @@ class Database {
     public function getHourDay($date) {
         try {
             $sth = $this->_db->prepare("
-            SELECT
-            	*
-            FROM 
-            	`usage_per_hour_per_day`
-            WHERE
-                DATE(date) = :date");
+			SELECT 
+				ts as date, 
+				HOUR(ts) as hour, 
+				(MAX(meter_normal)-MIN(meter_normal)) as e_normal, 
+				(MAX(meter_low)-MIN(meter_low)) as e_low, 
+				((MAX(meter_normal)-MIN(meter_normal))+(MAX(meter_low)-MIN(meter_low))) as e_total 
+			FROM consumption 
+			WHERE DATE(ts) = :date
+			GROUP BY DATE(ts), HOUR(ts)	
+			");
 
             $sth->bindValue(':date', $date, PDO::PARAM_STR); 
             $sth->execute();
@@ -170,14 +178,19 @@ class Database {
     public function getDayWeek($week,$year) {
         try {
             $sth = $this->_db->prepare("
-            SELECT
-            	*
-            FROM 
-            	`total_per_day_per_week`
-            WHERE
-                week = :week
-            AND
-                year = :year");                
+			SELECT 
+				DATE(ts) as date, 
+				day(DATE(ts) ) as day, 
+				week(DATE(ts),3) as week, 
+				year(DATE(ts) ) as year, 	
+				(MAX(meter_normal)-MIN(meter_normal)) as e_normal, 
+				(MAX(meter_low)-MIN(meter_low)) as e_low, 
+				((MAX(meter_normal)-MIN(meter_normal))+(MAX(meter_low)-MIN(meter_low))) as e_total
+			FROM consumption 
+			WHERE week(DATE(ts),3)=:week
+			AND year(DATE(ts))=:year
+			GROUP BY month(DATE(ts)), dayofmonth(DATE(ts)),week(`date`,3), year(DATE(ts))
+			");                
 
             $sth->bindValue(':week', $week, PDO::PARAM_STR); 
             $sth->bindValue(':year', $year, PDO::PARAM_STR);             
@@ -197,17 +210,20 @@ class Database {
     public function getWeekYear($week,$year) {
         try {
             $sth = $this->_db->prepare("
-            SELECT
-            	*
-            FROM 
-            	`total_per_week`
-            WHERE
-                year = :year
-            AND    
-                week = :week");
-
-            $sth->bindValue(':week', $week, PDO::PARAM_STR);                 
+			SELECT 
+				week(DATE(ts),3) as week, 
+				year(DATE(ts)) as year, 
+				(MAX(meter_normal)-MIN(meter_normal)) as e_normal, 
+				(MAX(meter_low)-MIN(meter_low)) as e_low, 
+				((MAX(meter_normal)-MIN(meter_normal))+(MAX(meter_low)-MIN(meter_low))) as e_total
+			FROM consumption 
+			WHERE year(DATE(ts))= :year
+			AND week(DATE(ts),3)= :week
+			GROUP BY week(DATE(ts),3), year(DATE(ts))
+			");
+              
             $sth->bindValue(':year', $year, PDO::PARAM_STR); 
+            $sth->bindValue(':week', $week, PDO::PARAM_STR);   			
             $sth->execute();
 
             $rows = $sth->fetchAll(PDO::FETCH_OBJ);
@@ -224,14 +240,19 @@ class Database {
     public function getDayMonth($month,$year) {
         try {
             $sth = $this->_db->prepare("
-            SELECT
-            	*
-            FROM 
-            	`total_per_day_per_month`
-            WHERE
-                month = :month
-            AND
-                year = :year");
+			SELECT 
+				DATE(ts) as date, 
+				day(DATE(ts) ) as day, 
+				month(DATE(ts) ) as month, 
+				year(DATE(ts) ) as year, 	
+				(MAX(meter_normal)-MIN(meter_normal)) as e_normal, 
+				(MAX(meter_low)-MIN(meter_low)) as e_low, 
+				((MAX(meter_normal)-MIN(meter_normal))+(MAX(meter_low)-MIN(meter_low))) as e_total
+			FROM consumption 
+			WHERE month(DATE(ts))=:month
+			AND year(DATE(ts))=:year
+			GROUP BY month(DATE(ts)), dayofmonth(DATE(ts)), year(DATE(ts))
+			");
 
             $sth->bindValue(':month', $month, PDO::PARAM_STR); 
             $sth->bindValue(':year', $year, PDO::PARAM_STR); 
@@ -253,14 +274,18 @@ class Database {
             if($month != null)
             {
                 $sth = $this->_db->prepare("
-                SELECT
-                    *
-                FROM 
-                    `total_per_month`
-                WHERE
-                    year = :year
-                AND    
-                    month = :month");
+				SELECT 
+					monthname(DATE(ts)) as monthname, 
+					month(DATE(ts)) as month, 
+					year(DATE(ts) ) as year, 	
+					(MAX(meter_normal)-MIN(meter_normal)) as e_normal, 
+					(MAX(meter_low)-MIN(meter_low)) as e_low, 
+					((MAX(meter_normal)-MIN(meter_normal))+(MAX(meter_low)-MIN(meter_low))) as e_total
+				FROM consumption 
+				WHERE month(DATE(ts))=:month
+				AND year(DATE(ts))=:year
+				GROUP BY month(DATE(ts)), year(DATE(ts))	
+				");
 
                 $sth->bindValue(':month', $month, PDO::PARAM_STR); 
                 $sth->bindValue(':year', $year, PDO::PARAM_STR); 
@@ -272,12 +297,17 @@ class Database {
             else
             {
                   $sth = $this->_db->prepare("
-                SELECT
-                    *
-                FROM 
-                    `total_per_month`
-                WHERE
-                    year = :year");
+				SELECT 
+					monthname(DATE(ts)) as monthname, 
+					month(DATE(ts)) as month, 
+					year(DATE(ts) ) as year, 	
+					(MAX(meter_normal)-MIN(meter_normal)) as e_normal, 
+					(MAX(meter_low)-MIN(meter_low)) as e_low, 
+					((MAX(meter_normal)-MIN(meter_normal))+(MAX(meter_low)-MIN(meter_low))) as e_total
+				FROM consumption 
+				WHERE year(DATE(ts))=:year
+				GROUP BY month(DATE(ts)), year(DATE(ts))	
+				");
 
                 $sth->bindValue(':year', $year, PDO::PARAM_STR); 
                 $sth->execute();
@@ -297,12 +327,15 @@ class Database {
     public function getYears($year) {
         try {
             $sth = $this->_db->prepare("
-            SELECT
-            	*
-            FROM 
-            	`total_per_year`
-            WHERE
-                year = :year");
+			SELECT 
+				year(DATE(ts) ) as year, 	
+				(MAX(meter_normal)-MIN(meter_normal)) as e_normal, 
+				(MAX(meter_low)-MIN(meter_low)) as e_low, 
+				((MAX(meter_normal)-MIN(meter_normal))+(MAX(meter_low)-MIN(meter_low))) as e_total
+			FROM consumption 
+			WHERE year(DATE(ts))=:year
+			GROUP BY year(DATE(ts))
+			");
 
             $sth->bindValue(':year', $year, PDO::PARAM_STR); 
             $sth->execute();

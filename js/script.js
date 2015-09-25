@@ -25,6 +25,11 @@ function requestLiveData() {
     });
 }
 
+//var valuePref = false;
+var valueSuffix = " kWh";
+//var tariffLow = 0.2133;
+//var tariffNormal = 0.2294;
+
 $(document).ready(function() {
 
     Highcharts.setOptions({
@@ -71,7 +76,7 @@ $(document).ready(function() {
             headerFormat: '<div class="chart_tooltip_header">{point.key}</div><table class="chart_tooltip_table"><thead><tr><th>Consumption</th></tr></thead>',
             pointFormat: '<tbody><tr><td class="chart_tooltip_name" style="color: {series.color}">\u25A0 {series.name}: </td>' +
                          '<td class="chart_tooltip_value">{point.y}</td></tr>',
-            footerFormat: '<td colspan="2" class="chart_tooltip_total"><b>{point.total} kWh</b></td></tbody></table>',
+            footerFormat: '<td colspan="2" class="chart_tooltip_total"><b>{point.total}' + valueSuffix + '</b></td></tbody></table>',
             //valueSuffix: ' kWh',
             crosshairs: [{
                 dashStyle: 'solid',
@@ -118,8 +123,12 @@ $(document).ready(function() {
 							$('.showChart').removeClass('active');	
 							$('.showChart').blur();							
 							$('[data-chart='+target+']').addClass('active');	
-
-							createChart(target,date);									
+							
+							if (chart_type != "day")
+							{
+								createChart(target,date);	
+							}
+																
                         }
                     }
                 }
@@ -127,21 +136,33 @@ $(document).ready(function() {
         },                  
         series: []
     }
- 
+/* 
+	function convert2Euro(obj,tariff)
+		{		
+			$.each(obj, function(i, val) {
+				obj[i]=Math.round((val*tariff)*100)/100;
+				//return jsonData[2];				   				   
+			});	
+		}
+*/		
 	//create the chart
     function createChart(target,date){    
 			$.ajax({
 				url: 'data_'+target+'.php?date='+date,
 				dataType: 'json',
-				success: function( jsonData ) {
-	
+				success: function(jsonData) {
+/*
+					if (valuePref)
+					{
+						convert2Euro(jsonData[1].data,tariffLow);
+						convert2Euro(jsonData[2].data,tariffNormal);						
+					}
+*/				
 				//console.log(jsonData);
                     options.xAxis.categories = jsonData[0]['data'];
-                    options.series[0] = jsonData[1];
+                    options.series[0] = jsonData[1]
                     options.series[1] = jsonData[2];
-                    options.title.text = jsonData[3]['data'];   
-					options.series[0].zIndex = 1;	
-					options.series[1].tooltip = { valueSuffix: " kWh" };					
+                    options.title.text = jsonData[3]['data'];   															
 
 					switch (target) {
 
@@ -149,31 +170,39 @@ $(document).ready(function() {
 						options.xAxis.labels = { formatter: function() { return Highcharts.dateFormat('%H %M', this.value);}}
 						options.series[0].tooltip = { valueSuffix: " watt", xDateFormat: '%H:%M', footerFormat:''};	
 						options.series[0].type = "areaspline";
+						options.series[0].zIndex = 1;	
 						options.series[1].type = "areaspline";
 						options.series[1].zIndex = 0;
+						options.series[1].tooltip = { valueSuffix: valueSuffix };
 						break;
 					case 'day_hour':
 						options.xAxis.labels = { formatter: function() { return Highcharts.dateFormat('%H', this.value);}}
-						options.series[0].tooltip = { valueSuffix: " kWh", xDateFormat: '%H:%M', footerFormat:''};	
+						options.series[0].tooltip = { valueSuffix: valueSuffix, xDateFormat: '%H:%M', footerFormat:''};	
+						options.series[1].tooltip = { valueSuffix: valueSuffix };						
 						break;
 					case 'week':
 						options.xAxis.labels = { formatter: function() { return Highcharts.dateFormat('%e', this.value);}}	
-						options.series[0].tooltip = { valueSuffix: " kWh", xDateFormat: '%A %e %B %Y' };	
+						options.series[0].tooltip = { valueSuffix: valueSuffix, xDateFormat: '%A %e %B %Y' };	
+						options.series[1].tooltip = { valueSuffix: valueSuffix };
 					   break;
 					case 'month':
 						options.xAxis.labels = { formatter: function() { return Highcharts.dateFormat('%e', this.value);}}	
-						options.series[0].tooltip = { valueSuffix: " kWh", xDateFormat: '%A %e %B %Y' };
+						options.series[0].tooltip = { valueSuffix: valueSuffix, xDateFormat: '%A %e %B %Y' };
+						options.series[1].tooltip = { valueSuffix: valueSuffix };
+						
 						break;
 					case 'year':
 						options.xAxis.labels = { formatter: function() { return Highcharts.dateFormat('%B', this.value);}}
-						options.series[0].tooltip = { valueSuffix: " kWh", xDateFormat: '%B %Y' };	
+						options.series[0].tooltip = { valueSuffix: valueSuffix, xDateFormat: '%B %Y' };	
+						options.series[1].tooltip = { valueSuffix: valueSuffix };
 						break;					   
 					default:
 						options.xAxis.labels = { formatter: function() { return Highcharts.dateFormat('%e', this.value);}}	
-						options.series[0].tooltip = { valueSuffix: " kWh", xDateFormat: '%A %e %B %Y' };
+						options.series[0].tooltip = { valueSuffix: valueSuffix, xDateFormat: '%A %e %B %Y' };
+						options.series[1].tooltip = { valueSuffix: valueSuffix };
 						break;
 					} 
-		                       
+	                       
                     historychart = new Highcharts.Chart(options);
                 }
             });
@@ -254,7 +283,32 @@ $(document).ready(function() {
 			}		
 		});  
 	}
+/*
+	$('#euro').click(function () {	
+		valuePref = true;
+		valueSuffix = " €";
+		var target = $('#history').data('chart'); 
+		var $picker = $("#datepicker"); 
+		var date = $picker.datepicker({ dateFormat: 'yy-mm-dd' }).val();
+		createChart(target, date); 
+		
+		$(this).addClass('active');	
+		$('#kwh').removeClass('active');	
+	});			
 
+	$('#kwh').click(function () {	
+		valuePref = false;
+		valueSuffix = " kWh";
+		var target = $('#history').data('chart'); 
+		var $picker = $("#datepicker"); 
+		var date = $picker.datepicker({ dateFormat: 'yy-mm-dd' }).val();
+		createChart(target, date); 
+		
+		$(this).addClass('active');	
+		$('#euro').removeClass('active');	
+	});	
+*/
+	
 	// Show chart (navbar)
 	$('.showChart').click(function(){
 		var chart = $(this).data('chart');
@@ -279,6 +333,20 @@ $(document).ready(function() {
 		}
 		//console.log(chart);	
 	});
+		
+	$('#today').click(function () {		
+		var target = $('#history').data('chart');  
+		var $picker = $("#datepicker");  
+		var now = new Date();
+		$picker.datepicker('setDate', now);		
+		var date = $.datepicker.formatDate( "yy-mm-dd",new Date(now));
+
+		createChart(target, date); 	
+		
+		$(this).addClass('active');		
+		$(this).removeClass('active');	
+		$(this).blur();	
+	});	
 	
 	$('#prev').click(function () {
 	   prev_next(-1);

@@ -66,45 +66,64 @@
     <div class="row">
 
 		<div class="col-xs-12 col-sm-12 col-lg-12">	
-		<nav class="navbar navbar-default">
-		<!--
-			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
-				<span class="sr-only">Toggle navigation</span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-				<span class="icon-bar"></span>
-			</button>		
-		 -->		
-			<div id="datepickContainer" class="chart day day_hour week month year input-group pull-left">
-				<input type="text" class="form-control" id="datepicker" value="<?php echo date("Y-m-d"); ?>">			
-			</div>		 
-		 
-			<div class="btn-group pull-right" id="navbar-collapse-1">		
-			<!--	<a role="button" href="#" data-chart="today" class="showChart btn btn-default navbar-btn">Today</a>-->
-				<a role="button" href="#" data-chart="live" class="showChart btn btn-default navbar-btn">Live</a>
-				<a role="button" href="#" data-chart="day" class="showChart btn btn-default navbar-btn">
-					<span class="hidden-xs">Day</span>
-					<span class="visible-xs">Dy</span>
-				</a>
-				<a role="button" href="#" data-chart="day_hour" class="showChart btn btn-default navbar-btn">
-					<span class="hidden-xs">Day(hour)</span>
-					<span class="visible-xs">Dy(Hr)</span>
-				</a>
-				<a role="button" href="#" data-chart="week" class="showChart btn btn-default navbar-btn">
-					<span class="hidden-xs">Week</span>
-					<span class="visible-xs">Wk</span>
-				</a>
-				<a role="button" href="#" data-chart="month" class="showChart btn btn-default navbar-btn active">
-					<span class="hidden-xs">Month</span>
-					<span class="visible-xs">Mth</span>
-				</a>
-				<a role="button" href="#" data-chart="year" class="showChart btn btn-default navbar-btn">
-					<span class="hidden-xs">Year</span>
-					<span class="visible-xs">Yr</span>
-				</a>
-			</div>	
+			<nav class="navbar navbar-default">
+			<!--
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>		
+			 -->		
+				<div id="datepickContainer" class="chart day day_hour week month year input-group pull-left">
+					<input type="text" class="form-control" id="datepicker" value="<?php echo date("Y-m-d"); ?>">			
+				</div>		 				
+									
+				<div class="btn-group pull-right" id="navbar-collapse-1">		
 				
-		</nav>
+					<a role="button" id="today" href="#" class="btn btn-default navbar-btn">
+						<span class="hidden-xs">Today</span>
+						<span class="visible-xs">Td</span>
+					</a>					
+									
+					<a role="button" href="#" data-chart="live" class="showChart btn btn-default navbar-btn">
+						<span class="hidden-xs">Live</span>
+						<span class="visible-xs">L</span>
+					</a>
+					<a role="button" href="#" data-chart="day" class="showChart btn btn-default navbar-btn">
+						<span class="hidden-xs">Day</span>
+						<span class="visible-xs">Dy</span>
+					</a>
+					<a role="button" href="#" data-chart="day_hour" class="showChart btn btn-default navbar-btn">
+						<span class="hidden-xs">Day(hour)</span>
+						<span class="visible-xs">Hr</span>
+					</a>
+					<a role="button" href="#" data-chart="week" class="showChart btn btn-default navbar-btn">
+						<span class="hidden-xs">Week</span>
+						<span class="visible-xs">Wk</span>
+					</a>
+					<a role="button" href="#" data-chart="month" class="showChart btn btn-default navbar-btn active">
+						<span class="hidden-xs">Month</span>
+						<span class="visible-xs">Mth</span>
+					</a>
+					<a role="button" href="#" data-chart="year" class="showChart btn btn-default navbar-btn">
+						<span class="hidden-xs">Year</span>
+						<span class="visible-xs">Yr</span>
+					</a>
+				</div>	
+<!--			
+				<div class="btn-group">		
+					<a role="button" href="#" id="kwh" class="active btn btn-default navbar-btn">
+						<span class="hidden-xs">kWh</span>
+						<span class="visible-xs">kWh</span>
+					</a>
+					<a role="button" href="#" id="euro" class="btn btn-default navbar-btn">
+						<span class="hidden-xs">€</span>
+						<span class="visible-xs">€</span>
+					</a>					
+				</div>					
+-->											
+			</nav>
 		</div>	
 	</div>	
     
@@ -142,7 +161,7 @@
 <!-- <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script> -->
 
 <!-- Bootstrap Core JavaScript -->
-<script type='text/javascript' src="//netdna.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type='text/javascript' src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>	
 
 </body>
