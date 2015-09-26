@@ -15,7 +15,7 @@
     <title>Smartmeter</title>
 
     <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
@@ -161,7 +161,7 @@
 <!-- <script type="text/javascript" src="http://code.highcharts.com/modules/exporting.js"></script> -->
 
 <!-- Bootstrap Core JavaScript -->
-<script type='text/javascript' src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+<script type='text/javascript' src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 <script type="text/javascript" src="js/script.js"></script>	
 
 </body>
